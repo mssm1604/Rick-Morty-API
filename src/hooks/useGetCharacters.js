@@ -20,13 +20,28 @@ export function useGetCharacters() {
 
   const getParamsToQuery = () => {
     let params
-    const ifContactResults = false
+    let ifContactResults = false
 
-    previosSearch.current === search
-      ? (params = `?page=${currentPage}`)
-      : (params = `?name=${search}`)
+    if (previosSearch.current === search) {
+      ifContactResults = true
+
+      search
+        ? (params = `?page=${currentPage}&name=${search}`)
+        : (params = `?page=${currentPage}`)
+    } else {
+      ifContactResults = false
+      params = `?name=${search}`
+    }
 
     return { params, ifContactResults }
+  }
+
+  const updateCharacters = ({ valueToSet, ifContactResults }) => {
+    if (ifContactResults) {
+      setCharacters(lastCharacters => lastCharacters.concat(valueToSet))
+    } else {
+      setCharacters(valueToSet)
+    }
   }
 
   useEffect(() => {
@@ -35,12 +50,11 @@ export function useGetCharacters() {
     getProducts({ params })
       .then(({ info, results }) => {
         setInfoData(info)
-        ifContactResults
-          ? setCharacters(lastCharacters => lastCharacters.concat(results))
-          : setCharacters(results)
+        updateCharacters({ valueToSet: results, ifContactResults })
       })
       .finally(() => {
         setLoading(false)
+        previosSearch.current = search
       })
   }, [search, currentPage])
 
