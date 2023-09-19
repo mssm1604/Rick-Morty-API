@@ -1,0 +1,33 @@
+.flex {
+  display: flex;
+}
+
+.filters {
+  gap: 40px;
+  align-items: flex-end;
+}
+
+.inputWrapper {
+  align-items: center;
+  gap: 10px;
+}
+
+.searchWrapper {
+  width: 40%;
+  align-items: flex-start;
+  flex-direction: column;
+
+  > div {
+    flex-direction: column;
+    gap: 5px;
+    width: 100%;
+
+    > input {
+      width: 100%;
+    }
+  }
+}
+
+label {
+  padding-left: 6px;
+}
